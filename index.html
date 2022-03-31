@@ -1,0 +1,73 @@
+<!--Au passage de la souris sur certains termes, affichons une infobulle.-->
+<!doctype html> 
+<html lang="fr"> 
+<head> 
+<meta charset="utf-8"> 
+<title>jQuery</title> 
+<script src="jquery.js"></script> 
+<script type="text/javascript"> 
+    //définit le décalage horizontal et vertical.
+    this.popup = function(){     
+        xOffset = 10; 
+        yOffset = 20;
+        //Au survol d’un lien avec une classe infobulle ($("a.infobulle")), une méthode jQuery hover() est appliquée.       
+        $("a.infobulle").hover(function(e){
+            //Lorsque le curseur est positionné sur le lien, le contenu de l’attribut title du lien est repris dans la variable texte  
+            this.texte = this.title; 
+            this.title = ""; 
+            //script ajoute au corps un paragraphe dont l’identifiant est infobulle contenant la variable texte. 
+            $("body").append("<p id='infobulle'>"+ this.texte +"</p>"); 
+            //afficher dans la page avec les coordonnées top et left. Cet affichage s’effectue avec un effet (fadeIn("fast")).
+            $("#infobulle") 
+            .css("top",(e.pageY - xOffset) + "px") 
+            .css("left",(e.pageX + yOffset) + "px") 
+            .fadeIn("fast");         
+        }, 
+        //Lorsque le curseur quitte le lien, l’infobulle est enlevée 
+        function(){ 
+            this.title = this.texte;         
+            $("#infobulle").remove(); 
+        });
+        //Prévoyons le cas où l’utilisateur bouge légèrement le curseur (mousemove()) alors qu’il est positionné sur le lien. Ceci permet au script d’accompagner ces mouvements.
+        $("a.infobulle").mousemove(function(e){ 
+            $("#infobulle") 
+            .css("top",(e.pageY - xOffset) + "px") 
+            .css("left",(e.pageX + yOffset) + "px"); 
+        });             
+    }; 
+    //Toutes les fonctions étant définies, le script jQuery peut activer la fonction popup().
+    $(document).ready(function(){ 
+        popup(); 
+    }); 
+</script> 
+<style> 
+    body { 
+        margin: 0; 
+        padding-left: 10px; 
+        padding-right: 10px; 
+        font: 90% Arial, sans-serif; 
+    } 
+    a { 
+        text-decoration: none;  
+        border-bottom: 1px dashed black; 
+        color: black; 
+    } 
+    #infobulle { 
+        position: absolute; 
+        border: 1px solid black; 
+        background: #9cf; 
+        padding:2px 5px; 
+        display: none; 
+    }     
+</style> 
+</head> 
+<body> 
+<!--l’attribut title du lien contient le texte de l’infobulle.-->
+<p>jQuery est un framework <a href="#" class="infobulle" title="Langage de 
+scripts utilisé dans les pages web interactives">JavaScript</a> libre qui 
+porte sur l'interaction entre le HTML et le JavaScript.</p> 
+<p>Jquery comprend le <a href="#" class="infobulle" title="Document Object 
+Model">DOM</a> et l'<a href="#" class="infobulle" title="Asynchronous 
+JavaScript and XML">AJAX </a>.</p> 
+</body> 
+</html>
